@@ -25,10 +25,10 @@ public class JwtUtils {
 
 	private static final Logger logger= LoggerFactory.getLogger(JwtUtils.class);
 	
-	//@Value("${jwt.secret}")
+	@Value("${jwt.secret}")
 	private String SECRET_KEY="secret";
 	
-	//@Value("${jwt.jwtExp}")
+	@Value("${jwt.jwtExp}")
 	private int JWT_EXP=300000;
 	
 	public String generateToken(UserDetails userdetails) {
