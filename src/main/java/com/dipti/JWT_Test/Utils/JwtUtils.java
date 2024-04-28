@@ -1,11 +1,13 @@
 package com.dipti.JWT_Test.Utils;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -42,19 +44,22 @@ public class JwtUtils {
 				.subject(userdetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
 				.expiration(new Date(System.currentTimeMillis()+JWT_EXP))
-				.signWith(getSignInKey(),Jwts.SIG.HS256)
+				.signWith(getSignInKey(), Jwts.SIG.HS256)
 				.compact();
 	}
 	
 	private SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+		byte[] keyBytes = new byte[32]; // 256 bits
+		new SecureRandom().nextBytes(keyBytes);
+		return new SecretKeySpec(keyBytes, "HmacSHA256");
     }
 	
 	
-	public boolean valiadteJwtToken(String token) {
+	public boolean validateJwtToken(String token) {
 		try {
+
 			Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token);
+			System.out.println(token);
 			return true;
 		}
 		catch(SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {

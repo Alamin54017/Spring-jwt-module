@@ -28,7 +28,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
-    private static final String AUTHORIZATION = "Authorization ";
+    private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
 
     private final JwtUtils jwtUtils;
@@ -44,8 +44,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		try {
 			String jwt=parseJwt(request);
 			
-			if(jwt!=null && jwtUtils.valiadteJwtToken(jwt)){
+			if(jwt!=null && jwtUtils.validateJwtToken(jwt)){
 				String username=jwtUtils.extractUsername(jwt);
+				System.out.println(username);
 				List<SimpleGrantedAuthority> grantedAuthorities= 
 						jwtUtils.extractAuthorities(jwt)
 						.stream()

@@ -40,7 +40,6 @@ public class MainController {
     @GetMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) {
         Authentication authentication;
-        System.out.println(user.getUsername()+"/n"+user.getPassword());
 
         try {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
