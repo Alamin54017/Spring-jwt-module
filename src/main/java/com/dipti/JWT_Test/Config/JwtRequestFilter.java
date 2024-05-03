@@ -46,20 +46,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			
 			if(jwt!=null && jwtUtils.validateJwtToken(jwt)){
 				String username=jwtUtils.extractUsername(jwt);
-				System.out.println(username);
 				List<SimpleGrantedAuthority> grantedAuthorities= 
 						jwtUtils.extractAuthorities(jwt)
 						.stream()
 						.map(SimpleGrantedAuthority::new)
 						.toList();
-				
-				UserDetails userDetails=new User(username,null,grantedAuthorities);
-				
+
+				UserDetails userDetails=new User(username,"",grantedAuthorities);
+
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
 						new UsernamePasswordAuthenticationToken(userDetails,null, grantedAuthorities);
-				
+
 				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				
+
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		} catch (Exception e) {
